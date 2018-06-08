@@ -1,16 +1,15 @@
-import React, {Component} from "react";
-import PropTypes from 'prop-types';
-import ShelfChanger from './ShelfChanger.js'
+import React, {Component} from "react"
+import PropTypes from 'prop-types'
 
 
-class Shelf extends Component {
+class ShelfChanger extends Component {
   static propTypes = {}
 
 
   render() {
     return (
       <div className="book-shelf-changer">
-        <select>
+        <select defaultValue={this.props.book.shelf}>
           <option value="none" disabled>Move to...</option>
           <option value="currentlyReading">Currently Reading</option>
           <option value="wantToRead">Want to Read</option>
