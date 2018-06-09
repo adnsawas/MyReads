@@ -43,9 +43,9 @@ class BooksApp extends Component {
       BooksAPI.search(searchText).then((booksReuslt) => {
         if (booksReuslt.length > 0) {
           // Add shelf names to every book in the query result
-          booksReuslt.forEach((book, index) => {
+          booksReuslt.forEach((book) => {
             let matchingBookInShelves = this.state.books.find(bookInShlef => bookInShlef.id === book.id)
-            if (matchingBookInShelves != null) {
+            if (matchingBookInShelves) {
               book.shelf = matchingBookInShelves.shelf
             } else {
               book.shelf = 'None'

@@ -4,7 +4,11 @@ import Shelf from './Shelf.js'
 import PropTypes from 'prop-types';
 
 class BookWardrobe extends Component {
-  static propTypes = {}
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    getShelfBooks: PropTypes.func.isRequired,
+    changeBookShelf: PropTypes.func.isRequired
+  }
 
   render() {
     return (

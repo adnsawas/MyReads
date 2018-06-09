@@ -3,7 +3,10 @@ import PropTypes from 'prop-types'
 
 
 class ShelfChanger extends Component {
-  static propTypes = {}
+  static propTypes = {
+    book: PropTypes.object.isRequired,
+    changeBookShelf: PropTypes.func.isRequired
+  }
 
   state = {
     currentShelf: this.props.book.shelf
@@ -11,9 +14,8 @@ class ShelfChanger extends Component {
 
   changeShelf = (event) => {
     this.props.changeBookShelf(this.props.book, event.target.value)
-
     this.setState({currentShelf: event.target.value})
-  }  
+  }
 
 
   render() {

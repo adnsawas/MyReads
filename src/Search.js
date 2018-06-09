@@ -5,7 +5,11 @@ import Book from './Book'
 
 
 class Search extends Component {
-  static propTypes = {}
+  static propTypes = {
+    books: PropTypes.array.isRequired,
+    changeBookShelf: PropTypes.func.isRequired,
+    searchBooks: PropTypes.func.isRequired
+  }
 
   updateQuery = (query) => {
     this.props.searchBooks(query)
