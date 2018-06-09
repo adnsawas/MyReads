@@ -1,5 +1,5 @@
 import React, {Component} from "react"
-import { Link, Route } from "react-router-dom";
+import { Route } from "react-router-dom";
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import Search from "./Search";
@@ -23,18 +23,44 @@ class BooksApp extends Component {
   }
 
   getShelfBooks = (shelfName) => {
-        return this.state.books.filter((b) => b.shelf === shelfName)
+        return this.state.books.filter((book) => book.shelf === shelfName)
     }
 
-  changeBookShelf = (book, newShelfName) => {
+  changeBookShelf = (bookChangingShelf, newShelfName) => {
     // Update the database
-    BooksAPI.update(book, newShelfName).then(() => {
-      book.shelf = newShelfName
+    BooksAPI.update(bookChangingShelf, newShelfName).then((data) => {
+      bookChangingShelf.shelf = newShelfName
+      // Remove the book that has changed its shelf and append it again to the books array.
+      // This is done using this.setState() to make sure everything renders and the book appears in the right shelf
+      this.setState(state => ({
+        books: state.books.filter(book => book.id !== bookChangingShelf.id).concat([ bookChangingShelf ])
+      }))
     })
   }
 
-  searchBooks() {
+  searchBooks = (searchText) => {
+    if (searchText) {
+      BooksAPI.search(searchText).then((booksReuslt) => {
+        if (booksReuslt.length > 0) {
+          // Add shelf names to every book in the query result
+          booksReuslt.forEach((book, index) => {
+            let matchingBookInShelves = this.state.books.find(bookInShlef => bookInShlef.id === book.id)
+            if (matchingBookInShelves != null) {
+              book.shelf = matchingBookInShelves.shelf
+            } else {
+              book.shelf = 'None'
+            }
+          })
 
+          // Update the searchBooks in state to be passed to search component
+          this.setState({searchBooks: booksReuslt})
+        }
+
+      })
+    }
+    else {
+      this.setState({searchBooks: []})
+    }
   }
 
   render() {
@@ -48,7 +74,11 @@ class BooksApp extends Component {
         )}/>
 
         <Route path='/search' render={({history}) => (
-          <Search/>
+          <Search
+            books={this.state.searchBooks}
+            changeBookShelf={this.changeBookShelf}
+            searchBooks={this.searchBooks}
+          />
         )}/>
       </div>
     )
