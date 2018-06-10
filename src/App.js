@@ -56,6 +56,8 @@ class BooksApp extends Component {
           this.setState({searchBooks: booksReuslt})
         }
 
+      }).catch(function() {
+        this.setState({searchBooks: []})
       })
     }
     else {
