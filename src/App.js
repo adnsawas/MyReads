@@ -1,9 +1,16 @@
 import React, {Component} from "react"
-import { Route } from "react-router-dom";
+import { Route, Switch } from "react-router-dom";
 import * as BooksAPI from './BooksAPI'
 import './App.css'
 import Search from "./Search";
 import BookWardrobe from "./BookWardrobe";
+
+// This component is dispayed when the user inserts a wrong path. It is like a 404 error page!
+const noMatch = ({location}) => (
+  <div>
+    <h1>404: Sorry, this page <code>{location.pathname}</code> does not exist :(</h1>
+  </div>
+)
 
 class BooksApp extends Component {
 
@@ -55,12 +62,18 @@ class BooksApp extends Component {
           // Update the searchBooks in state to be passed to search component
           this.setState({searchBooks: booksReuslt})
         }
+        else {
+          // Hide all books if the number of books returned is 0
+          this.setState({searchBooks: []})
+        }
 
       }).catch(function() {
+        // Hide all books if an error occured during fetching
         this.setState({searchBooks: []})
       })
     }
     else {
+      // Hide all books if the search field is empty
       this.setState({searchBooks: []})
     }
   }
@@ -68,6 +81,7 @@ class BooksApp extends Component {
   render() {
     return (
       <div className='app'>
+      <Switch>
         <Route exact path='/' render={() => (
           <BookWardrobe
             books={this.state.books}
@@ -82,6 +96,9 @@ class BooksApp extends Component {
             searchBooks={this.searchBooks}
           />
         )}/>
+
+        <Route component={noMatch} />
+      </Switch>
       </div>
     )
   }
