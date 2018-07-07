@@ -9,7 +9,7 @@ To run the website:
 * Install all project dependencies with `npm install`
 * Start the development server with `npm start`
 
-An local development server will start and appear in your browser.
+A local development server will start and appear in your browser.
 
 
 # Udacity's Original README file content
